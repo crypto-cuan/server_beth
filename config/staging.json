@@ -1,0 +1,15 @@
+{
+  "moduleSpecific": {
+    "clinic": {
+      "db": {
+        "host": "tokyo-foam.cpvzmzabsgxz.ap-southeast-1.rds.amazonaws.com",
+        "port": "5432",
+        "user": "postgres",
+        "name": "db_pillow_ecommerce",
+        "dialect": "postgres"
+      },
+      "publicIp": "127.0.0.1",
+      "domain": "localhost"
+    }  
+  }
+}

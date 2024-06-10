@@ -1,0 +1,24 @@
+{
+  "moduleSpecific": {
+    "clinic": {
+      "db": {
+        "host": "ep-throbbing-breeze-47038689.ap-southeast-1.aws.neon.tech",
+        "port": "5432",
+        "user": "Hilarion18",
+        "name": "neondb",
+        "password": "PBbNWr7y0HKT",
+        "dialect": "postgres",
+        "dialectOptions": {
+          "ssl": {
+            "require": true,
+            "rejectUnauthorized": false
+          }
+        }
+      },
+      "publicIp": "127.0.0.1",
+      "domain": "localhost"
+    }  
+  }
+}
+  
+  

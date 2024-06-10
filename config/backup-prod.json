@@ -1,0 +1,17 @@
+{
+    "moduleSpecific": {
+      "clinic": {
+        "db": {
+          "host": "ec2-44-198-100-81.compute-1.amazonaws.com",
+          "port": "5432",
+          "user": "wygtgqwmikhtbm",
+          "name": "d2nl46r3kk2g93",
+          "dialect": "postgres",
+          "password": "1db8bdd18c89cb3610d89a042b9bb49e58d8da76730065d73505a5301d28a994"
+        },
+        "publicIp": "127.0.0.1",
+        "domain": "localhost"
+      }  
+    }
+  }
+  

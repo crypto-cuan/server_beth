@@ -1,0 +1,23 @@
+{
+  "moduleSpecific": {
+    "clinic": {
+      "db": {
+        "host": "limbo.cpwvrai6dj1p.ap-southeast-1.rds.amazonaws.com",
+        "port": "5432",
+        "user": "postgres",
+        "name": "crypto_gacor",
+        "password": "secretweapon123",
+        "dialect": "postgres",
+        "dialectOptions": {
+          "ssl": {
+            "require": true,
+            "rejectUnauthorized": false
+          }
+        }
+      },
+      "publicIp": "127.0.0.1",
+      "domain": "localhost"
+    }  
+  }
+}
+  

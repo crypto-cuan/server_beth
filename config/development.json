@@ -1,0 +1,15 @@
+{
+  "moduleSpecific": {
+    "clinic": {
+      "db": {
+        "host": "localhost",
+        "port": "5432",
+        "user": "",
+        "name": "event-ticket",
+        "dialect": "postgres"
+      },
+      "publicIp": "127.0.0.1",
+      "domain": "localhost"
+    }  
+  }
+}
