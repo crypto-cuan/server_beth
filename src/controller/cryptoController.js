@@ -14,6 +14,7 @@ const API_KEY = process.env.binance_api_key;
 const API_SECRET = process.env.binance_api_secret;
 const FAPI_URL = process.env.binance_api_fapi_url;
 
+// var web3  = new Web3.providers.HttpProvider("http://localhost:3000");
 const web3 = new Web3(Web3.givenProvider || "http://localhost:3000");
 // if(!web3.isConnected()) {
 //     console.log("here");

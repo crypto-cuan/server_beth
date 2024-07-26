@@ -13,8 +13,8 @@ const API_SECRET = process.env.binance_api_secret;
 const urlInfura = process.env.url_infura;
 const urlGanache = process.env.url_ganache;
 
-// const web3 = new Web3(Web3.givenProvider || "http://localhost:3000");
-let web3Infura = new Web3(urlInfura)
+const web3 = new Web3(Web3.givenProvider || "http://localhost:3000");
+// let web3Infura = new Web3(urlInfura)
 
 export const createWeb3Object =  async (req, res, next) => {
     try {
@@ -82,6 +82,11 @@ export const createWeb3Account =  async (req, res, next) => {
 
 export const getAccountBalance =  async (req, res, next) => {
     try {
+        let web3Ganache = new Web3(urlGanache)
+        console.log("createWeb3Account", web3Ganache);
+
+        console.log("isConnected=");
+        web3Ganache.eth.net.isListening().then(console.log);
         let web3Infura = new Web3(urlInfura)
         // console.log("getAccountBalance", web3Infura);
         const address = req.body.address;
