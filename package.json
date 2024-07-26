@@ -14,9 +14,7 @@
     "clean": "rimraf dist",
     "build": "babel ./src --out-dir dist",
     "prod": "NODE_ENV=production npm-run-all clean build server:prod",
-    "watch": "nodemon",
-    "heroku-prebuild": "export NPM_CONFIG_PRODUCTION=false; export NODE_ENV=; NPM_CONFIG_PRODUCTION=false NODE_ENV=development npm install --only=dev --dev",
-    "heroku-postbuild": "export NPM_CONFIG_PRODUCTION=true; export NODE_ENV=production;"
+    "watch": "nodemon"
   },
   "dependencies": {
     "axios": "^1.6.7",
@@ -29,6 +27,7 @@
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "cron": "^3.1.6",
+    "cross-env": "^6.0.3",
     "crypto": "^1.0.1",
     "crypto-js": "^4.2.0",
     "debug": "~2.6.9",
@@ -57,7 +56,9 @@
     "@babel/preset-env": "^7.24.7",
     "@babel/register": "^7.24.6",
     "babel-eslint": "^10.1.0",
-    "cross-env": "^6.0.3",
     "nodemon": "^1.19.4"
+  },
+  "optionalDependencies": {
+    "fsevents": "^2.3.3"
   }
 }
