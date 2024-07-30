@@ -18,6 +18,7 @@ import {
   checkValidAddress,
   getTransactionList,
   getTransactionByHash,
+  sendTransaction,
 } from '../controller/bethController'
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -38,6 +39,7 @@ router.post('/getBalance', getBalance)
 router.post('/checkValidAddress', checkValidAddress)
 router.post('/getTransactionList', getTransactionList)
 router.post('/getTransactionByHash', getTransactionByHash)
+router.post('/sendTransaction', sendTransaction)
 
 router.get('/listProduct', listProduct)
 // router.post('/binance/futures/submitOrder', binanceBookFuture)

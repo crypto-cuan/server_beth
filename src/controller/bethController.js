@@ -347,6 +347,21 @@ export const getTransactionList = async (req, res, next) => {
     }
 }
 
+export const sendTransaction = async (req, res, next) => {
+    try {
+        let obj = {
+            from: req.body.from,
+            to: req.body.to,
+            value: req.body.value
+        }
+        let transactionReceipt = await  web3.eth.sendTransaction(obj);
+        // console.log("transactionReceipt: ", transactionReceipt);
+        response.success('success', res, transactionReceipt)
+    } catch (error) {
+        console.log("tryCatch Error getTransactionReceipt: ", error);
+        return response.error(`No data found`, res, flag.event_not_found)
+    }
+}
 
 export const getTransactionReceipt = async (req, res, next) => {
     try {
