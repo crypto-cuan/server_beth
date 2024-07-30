@@ -1,4 +1,7 @@
-import { Web3 } from 'web3';
+// import { Web3 } from 'web3';
+import Web3 from 'web3';
+import axios from "axios"
+
 // import contract       from "'truffle-contract'"
 // import path           from "'path'"
 // import MyContractJSON from "path.join(__dirname, 'build/contracts/MyContract.json')"
@@ -13,6 +16,7 @@ import { artifacts } from "truffle";
 
 // var web3  = new Web3.providers.HttpProvider("http://103.6.55.18:8545");
 
+const urlEtherscan = "https://api.etherscan.io/api"
 const web3 = new Web3(Web3.givenProvider || "http://103.6.55.18:8545");
 // const web3 = new Web3(Web3.givenProvider || "http://127.0.0.1:7545");
 const apiMoralis = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6ImFiOTg1NTlmLWFkNGItNDJiNC1hNjk2LTEwYjYwYTVhNmNkZSIsIm9yZ0lkIjoiMzk3OTk4IiwidXNlcklkIjoiNDA4OTU5IiwidHlwZUlkIjoiYTEyNjQyYjItZWU2My00MmMzLWJiZjUtYjY1MjMxYjdlODE5IiwidHlwZSI6IlBST0pFQ1QiLCJpYXQiOjE3MTk0NzU3MjAsImV4cCI6NDg3NTIzNTcyMH0.qV63IWaSl3_fQqSDmFkeqmwUP0SDwOHTfvrlQbayM8E"
@@ -39,6 +43,40 @@ export const checkConnection =  async (req, res, next) => {
         response.success('checkConnection is success', res, {})
     } catch (error) {
         console.log("error: ", error);
+    }
+}
+
+export const getBalance =  async (req, res, next) => {
+    try {
+        let address = req.body.address
+        let balance = await web3.eth.getBalance(address)
+        let result = Number(BigInt(balance))
+        // console.log("balance: ", balance);
+        if (typeof result === "number") {
+            return response.success('success', res, result)
+        } else {
+            return response.error(`No data found`, res, flag.event_not_found)
+        }
+    } catch (error) {
+        console.log("error: ", error);
+        return response.error(`Invalid address`, res, flag.invalid_address)
+    }
+}
+
+export const checkValidAddress =  async (req, res, next) => {
+    try {
+        let address = req.body.address
+        let isAddress = web3.utils.isAddress(address)
+        // let result = Number(BigInt(balance))
+        // console.log("balance: ", balance);
+        // if (typeof result === "number") {
+            return response.success('success', res, isAddress)
+        // } else {
+            // return response.error(`No data found`, res, flag.event_not_found)
+        // }
+    } catch (error) {
+        console.log("error: ", error);
+        return response.error(`Invalid address`, res, flag.invalid_address)
     }
 }
 
@@ -208,6 +246,45 @@ export const getTransactionDetailByHash = async (req, res, next) => {
     }
 }
 
+export const getTransactionByHash = async (req, res, next) => {
+    try {
+        const trxHash = req.body.trxHash
+        let result = await web3.eth.getTransaction(trxHash)
+        const detailTransaction =  {
+            blockHash: '0x66b5cc32cef7f6fe24194f0285e88bac5ce793c320c5d9bd59c9a9c5a72952e0',
+            blockNumber: 136067n,
+            from: '0x59d9ad20071e442477678eaabcfdb6693973fef1',
+            gas: 21000n,
+            gasPrice: 1014285714n,
+            hash: '0x5f436240416dbe771cbd5cb0df57f31f0ff3f33d55f4702e8b009b038eca0f2f',
+            input: '0x',
+            nonce: 9n,
+            to: '0x33449a3af79a4125c57987eeaf756a20b6b50ef5',
+            transactionIndex: 0n,
+            value: 1000000000000000000n,
+            type: 0n,
+            chainId: 4355n,
+            v: 8746n,
+            r: '0x18f44c5c417e26887a855eb404e78478fe13d7b023e9451f43bc7768b2795700',
+            s: '0x10cfad31fd1840abe8fea083135007cb4f3ab3384cd0319627740c7ef8ae2551',
+            data: '0x'
+        }
+        result.blockNumber = Number(BigInt(result.blockNumber))
+        result.gas = Number(BigInt(result.gas))
+        result.gasPrice = Number(BigInt(result.gasPrice))
+        result.nonce = Number(BigInt(result.nonce))
+        result.transactionIndex = Number(BigInt(result.transactionIndex))
+        result.value = Number(BigInt(result.value))
+        result.type = Number(BigInt(result.type))
+        result.chainId = Number(BigInt(result.chainId))
+        result.v = Number(BigInt(result.v))
+        return response.success('success', res, result)
+    } catch (error) {
+        console.log("tryCatch error getTransactionByHash: ", error);
+        return response.error(`No user found`, res, flag.event_not_found)
+    }
+}
+
 export const getListTransactions = async (req, res, next) => {
     try {
         let latestBlock = await web3.eth.getBlock("latest")
@@ -232,6 +309,41 @@ export const getListTransactions = async (req, res, next) => {
     } catch (error) {
         console.log("tryCatch Error getListTransactions: ", error);
         return response.error(`No user found`, res, flag.event_not_found)
+    }
+}
+
+export const getTransactionList = async (req, res, next) => {
+    try {
+        let address = req.body.address
+        let limit = req.body.limit
+        let params = {
+          module: "account",
+          action: "txlist",
+          address: address,
+          startblock: "0",
+          endBlock: "99999999999999",
+          page: 2,
+          offset: limit,
+          sort: "desc",
+          apiKey: "XMN5EZ3DZIQBPC9HW12FP79WQF3DRUR4UT"
+        }
+        const etherResp = await axios.get(urlEtherscan, {params:params})
+        console.log("etherResp: ", etherResp.data);
+        let data = etherResp.data.result
+        if (etherResp.data !== undefined && etherResp.data !== null) {
+            // let result = etherResp.data.result
+            let result = []
+            // for (let i = 0; i < limit; ++i) {
+            //     result.push(data[i])
+            // }
+            result = data
+            return response.success('success', res, result)
+        } else {
+            return response.error(`No data found`, res, flag.event_not_found)
+        }
+    } catch (error) {
+      console.log("catch error getTransactionList: ", error);
+      return response.error(`No data found`, res, flag.event_not_found)
     }
 }
 
@@ -291,6 +403,23 @@ export const getBlock =  async (req, res, next) => {
             uncles: []
         }
         response.success('getBlock is success', res, "result")
+    } catch (error) {
+        console.log("error: ", error);
+        return response.error(`No user found`, res, flag.event_not_found)
+    }
+}
+
+export const getBlockCount =  async (req, res, next) => {
+    try {
+        // let result = {
+        //     totalBlockNumber: ""
+        // }
+        const blockNumber = req.body.blockNumber
+        var block = await web3.eth.getBlock("latest")
+        console.log("block: ", block);
+        // result.totalBlockNumber = Number(BigInt(block.number))
+        let result = Number(BigInt(block.number))
+        response.success('success', res, result)
     } catch (error) {
         console.log("error: ", error);
         return response.error(`No user found`, res, flag.event_not_found)

@@ -141,4 +141,5 @@ module.exports = {
   invalid_body_request: 'IBR001P',
   incorrect_email_format: 'IEF001P',
   event_not_found: 'ENF001F',
+  invalid_address: "IA001A"
 }

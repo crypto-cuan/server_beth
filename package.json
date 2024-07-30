@@ -46,7 +46,7 @@
     "socket.io": "^4.7.4",
     "solc": "^0.8.26",
     "truffle": "^5.11.5",
-    "web3": "^4.4.0"
+    "web3": "^3.0.0-rc.5"
   },
   "devDependencies": {
     "@babel/cli": "^7.24.7",

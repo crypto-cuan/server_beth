@@ -1,4 +1,5 @@
-import { Web3 } from 'web3';
+// import { Web3 } from 'web3';
+import Web3 from 'web3';
 import { USDMClient, MainClient } from 'binance';
 import axios from 'axios';
 import moment from 'moment';
