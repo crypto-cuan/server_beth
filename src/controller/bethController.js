@@ -395,7 +395,6 @@ export const getBlock =  async (req, res, next) => {
     try {
         const blockNumber = req.body.blockNumber
         var block = await web3.eth.getBlock(blockNumber)
-        console.log("block: ", block);
         let template = {
             difficulty: 2n,
             extraData: '0xd883010d0f846765746888676f312e32312e36856c696e75780000000000000049eeb2fdd8960376d7640d10f2a97575bf66332dcceac0736bb0c825b6e556352ad1f9a31116fcd5bb922beb25d9f82aa85a8cba997a884d6160df8d9ee9795b00',
@@ -459,5 +458,73 @@ export const getTransactionMoralis = async (req, res, next) => {
         response.success('getBlock is success', res, resp.result)
     } catch (e) {
         console.error(e);
+    }
+}
+
+export const getAverageGasUsed = async (req, res, next) => {
+    try {
+        let result = {}
+        let yourDate = new Date()
+        const offset = yourDate.getTimezoneOffset()
+        yourDate = new Date(yourDate.getTime() - (offset*60*1000))
+        let endDate =  yourDate.toISOString().split('T')[0]
+        let params = {
+          module: "stats",
+          action: "dailyavggasprice",
+          startdate: "2024-05-01",
+          enddate: endDate,
+          sort: "asc",
+          apiKey: "XMN5EZ3DZIQBPC9HW12FP79WQF3DRUR4UT"
+        }
+        const etherResp = await axios.get(urlEtherscan, {params:params})
+        let dataResponse = etherResp.data.result
+        let totalGasUsed = dataResponse.length
+        dataResponse.map((item, i) => {
+            item.avgGasPrice_Ether = web3.utils.fromWei(item.avgGasPrice_Wei.toString(), 'ether')
+        })
+        result.totalGasUsed = totalGasUsed
+        result.data = dataResponse
+        
+        response.success('getAverageGasUsed is success', res, result)
+    } catch (e) {
+        console.error(e); 
+    }
+}
+
+export const getDailyTotalGasUsed = async (req, res, next) => {
+    try {
+        let result = {}
+        // endDate
+        let yourDate = new Date()
+        const offset = yourDate.getTimezoneOffset()
+        yourDate = new Date(yourDate.getTime() - (offset*60*1000))
+        let endDate =  yourDate.toISOString().split('T')[0]
+
+        // startDate
+        let yourDate2 = new Date()
+        yourDate2 = yourDate2.setDate(yourDate2.getDate() - 1);
+        let startDate = new Date(new Date(yourDate2).getTime() - (offset*60*1000))
+        startDate =  startDate.toISOString().split('T')[0]
+
+        let params = {
+          module: "stats",
+          action: "dailygasused",
+          startdate: startDate,
+          enddate: endDate,
+          sort: "asc",
+          apiKey: "XMN5EZ3DZIQBPC9HW12FP79WQF3DRUR4UT"
+        }
+        const etherResp = await axios.get(urlEtherscan, {params:params})
+        let dataResponse = etherResp.data.result
+        let totalGasUsed = dataResponse.length
+        dataResponse.map((item, i) => {
+            item.gasUsed = web3.utils.fromWei(item.gasUsed.toString(), 'ether')
+        })
+        result.totalGasUsed = totalGasUsed
+        result.data = dataResponse
+        
+        response.success('getDailyTotalGasUsed is success', res, result)
+    } catch (e) {
+        console.error(e); 
     }
 }
